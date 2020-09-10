@@ -1,4 +1,4 @@
-# Cerebral coding challenge
+# Cerebral
 
 ### Prerequisites
 
