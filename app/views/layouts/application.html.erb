@@ -7,9 +7,15 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="sign-in form py-1 py-lg-5">
+      <div class="login-container col-lg-4 col-12 col-md-7 m-auto">
+        <%= image_tag("logo.svg", alt: "image" ) %>
+        <%= yield %>
+      </div>
+    </div>
   </body>
 </html>

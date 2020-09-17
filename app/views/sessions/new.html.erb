@@ -1,0 +1,14 @@
+<h4 class="mt-3">Log In</h4>
+<%= form_for :login do |f| %>
+  <div class="text-field form-group text-left">
+    <%= f.label :email %>
+    <%= f.text_field :email, autofocus: true, class: "login-input" %>
+  </div>
+  <div class="text-field form-group text-left">
+    <%= f.label :password %>
+    <%= f.password_field :password, class: "login-input" %>
+  </div>
+  <div>
+    <%= f.submit "Log In", class: 'purple-btn' %>
+  </div>
+<% end %>

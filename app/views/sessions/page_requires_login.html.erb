@@ -1,0 +1,31 @@
+<h3 class="mt-4">Welcome</h3>
+<% if logged_in? %>
+  <h4>You are logged in as: <%= current_user.email %></h4>
+  <hr class="my-4">
+  <div class="text-left">
+    <div class="d-flex">
+      <h4 class="m-3">Status:</h4>
+      <% if current_user.current? %>
+        <div class="alert-secondary alert w-25 text-center" role="alert">
+          New
+        </div>
+      <% else %>
+        <div class="<%= current_user.paid? ? 'alert-primary alert w-25 text-center' : 'alert-danger alert w-25 text-center' %>" role="alert">
+          <%= current_user.status %>
+        </div>
+      <%end%>
+    </div>
+    <div class="m-3">
+      <%=link_to "Complete Payment", pay_path(current_user.id), method: :post, class: 'purple-btn' %>
+    </div>
+    <% if current_user.paid? %>
+      <div class="m-3">
+        <%=link_to "Cancel Payment", cancel_path(current_user.id), method: :post, class: 'black-btn' %>
+      </div>
+    <%end%>
+  </div>
+<%end%>
+<hr class="my-4">
+<div class="m-3">
+  <%=link_to "LOGOUT", logout_path, method: :delete, class: 'black-btn m-3' %>
+</div>

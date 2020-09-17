@@ -1,35 +1,15 @@
 class UsersController < ApplicationController
+  skip_before_action :authorized, only: [:new, :create]
+  expose(:user)
 
-  def show
-    user = User.find(params[:id])
-    render json: user
+  def new
   end
 
   def create
-    user = User.create(user_params)
-    if user.valid?
-      user = user
-      token = JWT.encode({ user_id: user.id }, secret, 'HS256')
-      render json: { user: user, token: token }
-    else
-      render json: { errors: user.errors.full_messages }
-    end
+    @user = User.create(params.require(:user).permit(:email,
+      :password, :status))
+    session[:user_id] = @user.id
+    redirect_to '/'
   end
 
-  def update
-    user = User.find(params[:id])
-    user.update(user_params)
-    render json: user
-  end
-
-  def destroy
-    user = User.find(params[:id])
-    user.destroy
-  end
-
-  private
-
-  def user_params
-    params.permit(:username, :password)
-  end
 end

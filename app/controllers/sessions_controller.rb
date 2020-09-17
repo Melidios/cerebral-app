@@ -1,28 +1,29 @@
 class SessionsController < ApplicationController
+  skip_before_action :authorized, only: [:new, :create, :welcome]
 
-  def login
-    user = User.find_by(username: login_params[:username])
-    if user && user.authenticate(login_params[:password])
-      token = JWT.encode({user_id: user.id}, secret, 'HS256')
-      render json: {user: user, token: token}
+  def new
+  end
+
+  def create
+    user = User.find_by(email: params[:login][:email].downcase)
+    if user && user.authenticate(params[:login][:password]) 
+      session[:user_id] = user.id.to_s
+      redirect_to '/'
     else
-      render json: {errors: user.errors.full_messages}
+      flash.now.alert = "Incorrect email or password, try again."
+      render :new
     end
   end
 
-  def persist
-    if request.headers['Authorization']
-      encoded_token = request.headers['Authorization'].split(' ')[1]
-      token = JWT.decode(encoded_token, secret)
-      user_id = token[0]['user_id']
-      user = User.find(user_id)
-      render json: user
-    end
+  def welcome
   end
 
-  private
+  def page_requires_login
+  end
 
-  def login_params
-    params.permit(:username, :password)
+  def destroy
+    # delete the saved user_id key/value from the cookie:
+    session.delete(:user_id)
+    redirect_to '/welcome'
   end
 end
